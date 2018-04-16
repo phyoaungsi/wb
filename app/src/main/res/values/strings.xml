@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">🌸Taw Win Pan🌸</string>
+    <string name="action_settings">{Settings}</string>
+    <string name="title_activity_detail">{Item Details}</string>
+    <string name="action_favorite">Favourities</string>
+    <string name="favourities">ၾကိဳက္နွစ္သက္သည္မ်ား</string>
+    <string name="action_contact_title">ဆက္သြယ္ရန္</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="name">Hello blank fragment</string>
+    <string name="price">Hello blank fragment</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">  </string>
+    <string name="btnDetail">More</string>
+
+    <string name="title_activity_grid_view">ေတာ္ဝင္ပန္း</string>
+
+    <string name="title_activity_splash_screen">Taw Win Pan</string>
+    <string name="dummy_button">{Button1}</string>
+    <string name="dummy_content">{Button2}</string>
+    <string name="sign_in">Sign-in ၀င်ပါ</string>
+    <string name="no_network_connection_toast">No Internet Connection</string>
+    <string name="description_zoom_touch_close">Zoom to touch</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="title_activity_contact">ဆက္သြယ္ရန္</string>
+    <string name="address_line1">No 254, Room 16, Yanaung Road,Yankin township
+Yangon, Myanmar</string>
+    <string name="address_line2">Ph. 01 557008, 09 507 8847 ,09 250 356515</string>
+    <string name="address_line3"><a href='https://fb.com/twpfashion/'>https://www.facebook.com/twpfashion/</a></string>
+    <string name="address_line4">{Address4}</string>
+    <string name="phone_label">{Phone LABEL}</string>
+    <string name="title_activity_open_notification">Promotions</string>
+    <string name="title_tab2">Regular Items</string>
+    <string name="title_tab1">New Arrivals</string>
+    <string name="title_tab3">Promotions</string>
+
+    <string name="prompt1"></string>
+    <string name="prompt2">သို့မဟုတ္</string>
+    <string name="prompt3">ကိုနိပ္၍ ၀ယ္ယူနိုဳင္ပါသည္</string>
+
+    <string name="currency">က်ပ္</string>
+    <string name="title_activity_save_item">SaveItemActivity</string>
+    <string name="title_activity_order">OrderActivity</string>
+
+</resources>

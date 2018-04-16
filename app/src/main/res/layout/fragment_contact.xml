@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="pas.com.mm.shoopingcart.fragments.ContactFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="181dp"
+        android:layout_height="181dp"
+        android:id="@+id/imageView3"
+        android:layout_gravity="right|top"
+        android:src="@drawable/top_right_floral"
+        android:contentDescription="@string/abc_action_bar_home_description"
+        android:baselineAlignBottom="true"
+        android:alpha="10" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="284dp"
+        android:layout_gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:elevation="2dp"
+        android:contextClickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/address_line1"
+            android:id="@+id/addressLine1"
+            android:textColor="#7b1fa2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/address_line2"
+            android:id="@+id/addressLine2"
+            android:autoText="false"
+            android:textColor="#7b1fa2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/address_line3"
+            android:id="@+id/addressLine3"
+            android:textColor="#7b1fa2"
+            android:autoLink="web" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,86 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="pas.com.mm.shoopingcart.splash.SplashScreen">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="434dp"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:text=""
+        android:textColor="#FFF"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:elevation="3dp"
+        android:ellipsize="middle"/>
+    <TextView
+        android:id="@+id/txtConnection"
+        android:layout_width="340dp"
+        android:layout_height="476dp"
+        android:gravity="bottom"
+        android:keepScreenOn="true"
+        android:text="CONNECTED"
+        android:textColor="#FFF"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:elevation="3dp"
+        android:ellipsize="middle"
+        android:visibility="gone" />
+
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_gravity="bottom|center_horizontal" />
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/version"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="?attr/colorBackgroundFloating"
+        android:textSize="10sp" />
+
+<FrameLayout
+    android:layout_height="137dp"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/logo"
+    android:layout_width="300dp"
+    android:layout_margin="30dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="99dp"
+        app:srcCompat="@drawable/logo"
+        android:id="@+id/imageView5"
+        android:layout_gravity="center_horizontal|fill_horizontal"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="50dp"
+        app:srcCompat="@drawable/flower"
+        android:id="@+id/flower"
+
+        android:layout_height="50dp"
+
+        android:layout_gravity="right"
+        android:visibility="gone" />
+</FrameLayout>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+
+</FrameLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:weightSum="1"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="10dp"
+    android:elevation="4dp"
+    android:background="#fff">
+
+    <ImageView
+        android:id="@+id/grid_image"
+        android:visibility="gone"
+
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/holo_blue_bright"
+        android:layout_marginLeft="5dp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:weightSum="1"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="3dp"
+    android:elevation="2dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="3dp"
+    android:layout_height="99dp">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/grid_caption"
+        android:textColor="@color/textColorTertiary"
+        android:textSize="13sp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="-hehe haha "
+            android:id="@+id/usualPrice"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textSize="13sp"
+            android:layout_height="18dp"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:layout_marginRight="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="-"
+            android:id="@+id/grid_price"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textSize="13sp"
+            android:layout_height="18dp" />
+
+
+
+
+
+</LinearLayout>
+</LinearLayout>
