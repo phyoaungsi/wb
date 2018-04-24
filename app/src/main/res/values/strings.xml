@@ -63,5 +63,12 @@ Yangon, Myanmar</string>
     <string name="currency">က်ပ္</string>
     <string name="title_activity_save_item">SaveItemActivity</string>
     <string name="title_activity_order">OrderActivity</string>
+    <string name="order">Order</string>
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">346104462489189</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb346104462489189</string>
+    <!-- Twitter consumer key and secret -->
+    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>
+    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>
 
 </resources>

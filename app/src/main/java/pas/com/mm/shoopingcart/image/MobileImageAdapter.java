@@ -21,14 +21,13 @@ import android.widget.TextView;
 
 import pas.com.mm.shoopingcart.R;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
+
+
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+
 import java.util.List;
 
 import pas.com.mm.shoopingcart.database.DbSupport;
@@ -46,6 +45,10 @@ public class MobileImageAdapter extends BaseAdapter {
     private ImageFetcher mImageFetcher;
     protected List<Item> list;
     DecimalFormat formater = new DecimalFormat("#");
+
+
+
+
     public Context getmContext() {
         return mContext;
     }
@@ -148,7 +151,7 @@ public class MobileImageAdapter extends BaseAdapter {
 
         mPicasso.load(url)
                     .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_close_dark)
+                .error(R.drawable.ic_menu_manage)
                  //   .networkPolicy(NetworkPolicy.OFFLINE)
 
                     .resize(400, 400)

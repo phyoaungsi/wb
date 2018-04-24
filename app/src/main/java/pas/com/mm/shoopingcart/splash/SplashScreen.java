@@ -20,7 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.List;
 
 import pas.com.mm.shoopingcart.BuildConfig;
 import pas.com.mm.shoopingcart.DetailActivity;
@@ -61,6 +68,7 @@ public class SplashScreen extends AppCompatActivity implements DBListenerCallbac
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 300;
+    private static final int RC_SIGN_IN = 123;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -93,6 +101,10 @@ public class SplashScreen extends AppCompatActivity implements DBListenerCallbac
         }
     };
     private boolean mVisible;
+    List<AuthUI.IdpConfig> providers = Arrays.asList(
+
+         //   new AuthUI.IdpConfig.GoogleBuilder().build(),
+            new AuthUI.IdpConfig.FacebookBuilder().build());
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
@@ -119,11 +131,6 @@ public class SplashScreen extends AppCompatActivity implements DBListenerCallbac
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
-
-       // ImageView rocketImage = (ImageView) findViewById(R.id.image_rotate);
-      //  rocketImage.setBackgroundResource(R.drawable.splash_animation_list);
-       // rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
-       // rocketAnimation.start();
 
         TextView tv=(TextView)findViewById(R.id.txtConnection);
         tv.setText("Season Greeting");
@@ -251,14 +258,54 @@ public class SplashScreen extends AppCompatActivity implements DBListenerCallbac
     @Override
     public void LoadCompleted(boolean b) {
         if(b){
-            Intent mainIntent = new Intent(SplashScreen.this,ItemGridView.class);
-            mainIntent.putExtra("TITLE", this.getIntent().getStringExtra("TITLE"));
-            mainIntent.putExtra("BODY",this.getIntent().getStringExtra("BODY"));
-            mainIntent.putExtra("CONTENT",this.getIntent().getStringExtra("CONTENT"));
-            mainIntent.putExtra("TYPE",this.getIntent().getStringExtra("TYPE"));
-            mainIntent.putExtra("MAIN_IMAGE",this.getIntent().getStringExtra("MAIN_IMAGE"));
-            SplashScreen.this.startActivity(mainIntent);
-            SplashScreen.this.finish();
+
+          //  SplashScreen.this.startActivity(mainIntent);
+            //SplashScreen.this.finish();
+
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .build(),
+                   RC_SIGN_IN);
+
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String email=user.getEmail();
+                String displayName=user.getDisplayName();
+                String phone=user.getPhoneNumber();
+               List l=   user.getProviderData();
+                Intent mainIntent = new Intent(SplashScreen.this,ItemGridView.class);
+                mainIntent.putExtra("TITLE", this.getIntent().getStringExtra("TITLE"));
+                mainIntent.putExtra("BODY",this.getIntent().getStringExtra("BODY"));
+                mainIntent.putExtra("CONTENT",this.getIntent().getStringExtra("CONTENT"));
+                mainIntent.putExtra("TYPE",this.getIntent().getStringExtra("TYPE"));
+                mainIntent.putExtra("MAIN_IMAGE",this.getIntent().getStringExtra("MAIN_IMAGE"));
+                SplashScreen.this.startActivity(mainIntent);
+                SplashScreen.this.finish();
+            } else {
+                // Sign in failed, check response for error code
+                // ...
+
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setAvailableProviders(providers)
+                                .build(),
+                        RC_SIGN_IN);
+            }
         }
     }
 

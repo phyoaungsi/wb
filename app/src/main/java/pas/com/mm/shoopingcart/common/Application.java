@@ -8,6 +8,8 @@ import pas.com.mm.shoopingcart.util.FontOverride;
  * Created by phyo on 22/12/2016.
  */
 public final class Application  extends MultiDexApplication {
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,5 +27,10 @@ public final class Application  extends MultiDexApplication {
             FontOverride.setDefaultFont(this, "SERIF", "fonts/zawgyi.ttf");
             FontOverride.setDefaultFont(this, "SANS_SERIF", "fonts/zawgyi.ttf");
         }
+
+
     }
+
+
+
 }

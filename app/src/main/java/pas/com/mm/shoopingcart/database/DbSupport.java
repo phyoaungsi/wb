@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +31,7 @@ import pas.com.mm.shoopingcart.common.ApplicationConfig;
 import pas.com.mm.shoopingcart.database.model.Config;
 import pas.com.mm.shoopingcart.database.model.Item;
 import pas.com.mm.shoopingcart.database.model.Model;
+import pas.com.mm.shoopingcart.database.model.OrderForm;
 
 
 public class DbSupport {
@@ -355,5 +358,14 @@ public class DbSupport {
 
         myRef.addValueEventListener(postListener);
         return r;
+    }
+
+    public void orderNewProduct(String productId, double amount, int quantity) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String currentLoginMember=user.getUid();
+        OrderForm order = new OrderForm( productId,  amount,  quantity,  currentLoginMember);
+        String key = mDatabase.child("orders").child(currentLoginMember).push().getKey();
+        mDatabase.child("orders").child(currentLoginMember).child(key).setValue(order);
     }
 }
