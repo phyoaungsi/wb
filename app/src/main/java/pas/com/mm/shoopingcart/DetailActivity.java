@@ -47,11 +47,12 @@ import pas.com.mm.shoopingcart.database.model.Item;
 import pas.com.mm.shoopingcart.fragments.DescriptionFragment;
 import pas.com.mm.shoopingcart.image.Images;
 import pas.com.mm.shoopingcart.image.ZoomImageView;
+import pas.com.mm.shoopingcart.order.OrderFragment;
 import pas.com.mm.shoopingcart.util.FontUtil;
 import pas.com.mm.shoopingcart.util.ImageCache;
 import pas.com.mm.shoopingcart.util.ImageFetcher;
 
-public class DetailActivity extends AppCompatActivity implements DetailFragment.OnFragmentInteractionListener, DescriptionFragment.OnFragmentInteractionListener {
+public class DetailActivity extends AppCompatActivity implements DetailFragment.OnFragmentInteractionListener, DescriptionFragment.OnFragmentInteractionListener,OrderFragment.OnFragmentInteractionListener {
     private static final String TAG = "DetailActivity";
     // Button button;
     private Context context;

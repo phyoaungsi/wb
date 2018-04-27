@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,6 +68,7 @@ import pas.com.mm.shoopingcart.database.model.Model;
 import pas.com.mm.shoopingcart.fragments.DescriptionFragment;
 import pas.com.mm.shoopingcart.image.ZoomImageView;
 import pas.com.mm.shoopingcart.order.OrderActivity;
+import pas.com.mm.shoopingcart.order.OrderFragment;
 import pas.com.mm.shoopingcart.util.FontUtil;
 import pas.com.mm.shoopingcart.util.ImageCache;
 import pas.com.mm.shoopingcart.util.ImageFetcher;
@@ -89,11 +92,11 @@ public class DetailFragment extends Fragment {
     private String[] mPlanetTitles;
     public static final String PREFS_NAME = "PAS";
     private Item item;
-    private List<Item> childs=new ArrayList<Item>();
+    private List<Item> childs = new ArrayList<Item>();
     private static final String IMAGE_CACHE_DIR = "thumbs";
     private Toolbar toolbar;
     String smsText;
-    private  ImageCache.ImageCacheParams cacheParams;
+    private ImageCache.ImageCacheParams cacheParams;
     private CharSequence mTitle;
     private ImageFetcher mImageFetcher;
     private static final String TAG = "ImageCache";
@@ -101,19 +104,20 @@ public class DetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private  TextView textPrice;
+    private TextView textPrice;
     private TextView t;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private ImageView backImage;
     private ImageView forwardImage;
-    int noOfChildren=0;
+    int noOfChildren = 0;
     //private String[] imageUrls;
     private OnFragmentInteractionListener mListener;
     private DecimalFormat formater = new DecimalFormat("#");
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    private static boolean liked=false;
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -144,22 +148,22 @@ public class DetailFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        int  mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_big_item_size);
+        int mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_big_item_size);
 
         cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
         cacheParams.setMemCacheSizePercent(0.25f);
         mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
         mImageFetcher.setLoadingImage(R.drawable.placeholder);
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
-        String object= getActivity().getIntent().getStringExtra("DETAIL_ITEM");
-        Gson gson=new Gson();
-        this.setItem((Item) gson.fromJson(object,Item.class));
-        DetailFragment df= new DetailFragment();
+        String object = getActivity().getIntent().getStringExtra("DETAIL_ITEM");
+        Gson gson = new Gson();
+        this.setItem((Item) gson.fromJson(object, Item.class));
+        DetailFragment df = new DetailFragment();
         df.setItem(this.getItem());
         //imageUrls= getItem().getImgUrl().split(" ");
-        DbSupport dbSupport=new DbSupport();
-        List<String> childIds=getItem().getChildren();
-        if(childIds!=null) {
+        DbSupport dbSupport = new DbSupport();
+        List<String> childIds = getItem().getChildren();
+        if (childIds != null) {
             for (String id : childIds) {
                 dbSupport.getItemById(id, new DBListenerCallback() {
                     @Override
@@ -181,56 +185,55 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v= inflater.inflate(R.layout.activity_detail, container, false);
+        final View v = inflater.inflate(R.layout.activity_detail, container, false);
         toolbar = (Toolbar) v.findViewById(R.id.toolbar);
-         toolbar.setTitle(this.getItem().getTitle());
-        FontUtil.setText(this.getContext(),toolbar,false);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle(this.getItem().getTitle());
+        FontUtil.setText(this.getContext(), toolbar, false);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Context context=this.getContext();
-         backImage=(ImageView) v.findViewById(R.id.back);
-        forwardImage=(ImageView) v.findViewById(R.id.forward);
-       // final ProgressBar pb=(ProgressBar) v.findViewById(R.id.progressbar_detail_img);
+        final Context context = this.getContext();
+        backImage = (ImageView) v.findViewById(R.id.back);
+        forwardImage = (ImageView) v.findViewById(R.id.forward);
+        // final ProgressBar pb=(ProgressBar) v.findViewById(R.id.progressbar_detail_img);
         final Button button = (Button) v.findViewById(R.id.btnChangeImage);
-        final ToggleButton tb=(ToggleButton)v.findViewById(R.id.tbFavDetail);
-//       final String pos = String.valueOf(getActivity().getIntent().getIntExtra("POSITION", 6000));
+      //  final ToggleButton tb = (ToggleButton) v.findViewById(R.id.tbFavDetail);
+        final FloatingActionButton likeButton = v.findViewById(R.id.likeButton);
 
         final String detailJson = getActivity().getIntent().getStringExtra("DETAIL_ITEM");
-        Gson gson=new Gson();
-        final Item i=gson.fromJson(detailJson,Item.class);
+        Gson gson = new Gson();
+        final Item i = gson.fromJson(detailJson, Item.class);
         final SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
-        String saved=settings.getString(i.getKey(),"-");
-        if(!saved.equals("-")){
-          tb.setChecked(true);
+        String saved = settings.getString(i.getKey(), "-");
+        if (!saved.equals("-")) {
+
+            likeButton.setImageResource(R.drawable.fav_toggle_icon_on);
+            liked=true;
+        } else {
+
+            likeButton.setImageResource(R.drawable.fav_toggle_icon_off);
+            liked=false;
         }
-        else
-        {
-            tb.setChecked(false);
-        }
+
+
+        /**
         tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
 
-                SharedPreferences.Editor editor=   settings.edit();
-               if(b)
-                {//Toast.makeText(context,"Checked",Toast.LENGTH_SHORT);
+                SharedPreferences.Editor editor = settings.edit();
+                if (b) {//Toast.makeText(context,"Checked",Toast.LENGTH_SHORT);
                     Log.d("tag", "checked");
-                    editor.putString(i.getKey(),detailJson);
+                    editor.putString(i.getKey(), detailJson);
                     Snackbar.make(v, "Added to liked items", Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
+                } else {
+                    //Toast.makeText(context,"Checked",Toast.LENGTH_SHORT);
+                    Log.d("tag", "unchecked");
+                    editor.remove(i.getKey());
                 }
-                else{
-                   //Toast.makeText(context,"Checked",Toast.LENGTH_SHORT);
-                   Log.d("tag", "unchecked");
-                   editor.remove(i.getKey());
-               }
-
-
-
-
 
 
                 editor.commit();
@@ -238,34 +241,49 @@ public class DetailFragment extends Fragment {
 
             }
         });
-        if(smsText==null) {
+**/
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = settings.edit();
+                if (!liked) {
+                    likeButton.setImageResource(R.drawable.fav_toggle_icon_on);
+                    editor.putString(i.getKey(), detailJson);
+                    Snackbar.make(v, "Added to wish list", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                    liked=true;
+                } else {
+                    editor.remove(i.getKey());
+                    likeButton.setImageResource(R.drawable.fav_toggle_icon_off);
+                    Snackbar.make(v, "Removed from wish list", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                    liked=false;
+                }
+                editor.commit();
+            }
+        });
+        if (smsText == null) {
             smsText = StringUtils.getSmsMessage(getItem());
         }
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                boolean sms_success=false;
+                boolean sms_success = false;
                 try {
 
                     Intent intent = new Intent(context, OrderActivity.class);
                     startActivity(intent);
 
                     //  sendSms(smsText);
-                    sms_success=true;
+                    sms_success = true;
+                } catch (Exception e) {
+                    sms_success = false;
                 }
-                catch(Exception e)
-                {
-                   sms_success=false;
-                }
-                if(sms_success==false)
-                {
-                    try
-                    {
+                if (sms_success == false) {
+                    try {
                         sendViber(smsText);
 
-                    }
-                    catch(Exception e)
-                    {
-                        Toast.makeText(context,"Viber not found",Toast.LENGTH_SHORT);
+                    } catch (Exception e) {
+                        Toast.makeText(context, "Viber not found", Toast.LENGTH_SHORT);
                     }
                 }
             }
@@ -279,56 +297,43 @@ public class DetailFragment extends Fragment {
                     String number = "tel:" + ApplicationConfig.phoneNumber;
                     Intent callIntent = null;
                     int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                    if (currentapiVersion >= 23){
+                    if (currentapiVersion >= 23) {
                         // Do something for lollipop and above versions
                         callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(number));
-                    } else{
+                    } else {
                         // do something for phones running an SDK before lollipop
                         callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                     }
                     startActivity(callIntent);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-     //   SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        TextView text1 = (TextView) v.findViewById(R.id.txtPrompt1);
 
 
-        TextView text1= (TextView) v.findViewById(R.id.txtPrompt1);
+        FontUtil.setFont(context, text1);
 
+        TextView text2 = (TextView) v.findViewById(R.id.txtPrompt2);
+        FontUtil.setFont(context, text2);
+        TextView text3 = (TextView) v.findViewById(R.id.txtPrompt3);
+        FontUtil.setFont(context, text2);
 
-        FontUtil.setFont(context,text1);
-
-        TextView text2= (TextView) v.findViewById(R.id.txtPrompt2);
-        FontUtil.setFont(context,text2);
-        TextView text3= (TextView) v.findViewById(R.id.txtPrompt3);
-        FontUtil.setFont(context,text2);
-
-         textPrice= (TextView) v.findViewById(R.id.textViewPrice);
-         t = (TextView) v.findViewById(R.id.oldPrice);
-        FontUtil.setFont(context,textPrice);
+        textPrice = (TextView) v.findViewById(R.id.textViewPrice);
+        t = (TextView) v.findViewById(R.id.oldPrice);
+        FontUtil.setFont(context, textPrice);
 
 
         setPrice(getItem());
-        final ZoomImageView thumb1View =(ZoomImageView) v.findViewById(R.id.imageView1);
-        //ImageWorker.OnImageLoadedListener imageListener=new ImageWorker.OnImageLoadedListener() {
-       //     @Override
-       //     public void onImageLoaded(boolean success) {
-                   //     pb.setVisibility(View.GONE);
-         //       thumb1View.setVisibility(View.VISIBLE);
-       //     }
-       // };
-       // mImageFetcher.loadImage("https://s-media-cache-ak0.pinimg.com/564x/4c/84/03/4c84030879a89cf9dde78ca79b454340.jpg", thumb1View,imageListener);
-        String url=this.getItem().getImgUrl();
+        final ZoomImageView thumb1View = (ZoomImageView) v.findViewById(R.id.imageView1);
+        String url = this.getItem().getImgUrl();
         Picasso.with(context)
                 .load(url)
-              //  .networkPolicy(NetworkPolicy.OFFLINE)
+                //  .networkPolicy(NetworkPolicy.OFFLINE)
                 .placeholder(R.drawable.placeholder)
-               // .resize(150, 50)
-              //  .centerCrop()
+                // .resize(150, 50)
+                //  .centerCrop()
                 .into(thumb1View);
 
 
@@ -342,38 +347,25 @@ public class DetailFragment extends Fragment {
 
         imageView.setLayoutParams(thumb1View.getLayoutParams());
         ((LinearLayout) v.findViewById(R.id.photo_frame)).addView(imageView);
-            //   thumb1View.setOnClickListener(new View.OnClickListener() {
-     //       @Override
-      //      public void onClick(View view) {
-    //            zoomImageFromThumb(thumb1View, R.drawable.wallpaper);
-     //       }
-     //   });
 
-        // Retrieve and cache the system's default "short" animation time.
-     //   mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-
-
-        Button descButton=(Button) v.findViewById(R.id.btnDesc);
+        Button descButton = (Button) v.findViewById(R.id.btnDesc);
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Log.d("Clieck", "clicked to change");
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 
                 DescriptionFragment newFragment = new DescriptionFragment();
                 ft.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
                 Fragment f = getFragmentManager().findFragmentByTag("DESC");
-                if(f==null || !f.isVisible()) {
-                    Log.d("Clieck", "show fragment");
+                if (f == null || !f.isVisible()) {
+
                     ft.replace(R.id.desc_frag_container, newFragment, "DESC");
                     ft.addToBackStack("DESC");
-// Start the animated transition.
+
                     ft.commit();
-                }
-                else if(f!=null && f.isVisible()) {
+                } else if (f != null && f.isVisible()) {
                     ft.setCustomAnimations(R.anim.exit_slide_out_up, R.anim.exit_slide_in_up);
 
                     ft.remove(f);
@@ -387,28 +379,60 @@ public class DetailFragment extends Fragment {
             }
         });
 
-        final LinearLayout layout=(LinearLayout) v.findViewById(R.id.circle_container);
+
+        Button addToCartButton = (Button) v.findViewById(R.id.btnAddToCart);
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+               /**
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                OrderFragment newFragment = new OrderFragment();
+                ft.setCustomAnimations(R.anim.slide_in_half_up, R.anim.slide_out_half_up);
+                Fragment f = getFragmentManager().findFragmentByTag("DESC");
+                if (f == null || !f.isVisible()) {
+
+                    ft.replace(R.id.desc_frag_container, newFragment, "DESC");
+                    ft.addToBackStack("DESC");
+
+                    ft.commit();
+                } else if (f != null && f.isVisible()) {
+                    ft.setCustomAnimations(R.anim.exit_slide_out_up, R.anim.exit_slide_in_up);
+
+                    ft.remove(f);
+
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+
+
+                    ft.commit();
+                    getFragmentManager().popBackStack();
+                }
+                **/
+            }
+        });
+
+
+        final LinearLayout layout = v.findViewById(R.id.circle_container);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        if(getItem().getChildren()!=null){
-         noOfChildren= this.getItem().getChildren().size();
+        if (getItem().getChildren() != null) {
+            noOfChildren = this.getItem().getChildren().size();
         }
-        if(noOfChildren==0) {
+        if (noOfChildren == 0) {
             forwardImage.setVisibility(View.GONE);
-        }else
-        {
+        } else {
             backImage.setVisibility(View.VISIBLE);
 
-            for(int index=0;index<noOfChildren+1;index++) {
+            for (int index = 0; index < noOfChildren + 1; index++) {
                 ImageView image = new ImageView(this.getContext());
                 //image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
                 image.setMaxHeight(10);
                 image.setMaxWidth(10);
-                if (index > 0){
+                if (index > 0) {
                     image.setImageResource(R.drawable.circle_pointer);
-                }
-                else{
+                } else {
                     image.setImageResource(R.drawable.circle_pointer_select);
                 }
                 layout.addView(image);
@@ -417,54 +441,54 @@ public class DetailFragment extends Fragment {
 
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {}
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrollStateChanged(int state) {
+            }
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             public void onPageSelected(int position) {
                 // Check if this is the page you want.
 
                 final int childcount = layout.getChildCount();
                 for (int i = 0; i < childcount; i++) {
-                    ImageView v = (ImageView)layout.getChildAt(i);
-                    if(i==position){
+                    ImageView v = (ImageView) layout.getChildAt(i);
+                    if (i == position) {
                         v.setImageResource(R.drawable.circle_pointer_select);
-                    }
-                    else{
+                    } else {
                         v.setImageResource(R.drawable.circle_pointer);
                     }
                 }
-                if(position==0) {
+                if (position == 0) {
                     backImage.setVisibility(View.GONE);
                     setPrice(getItem());
                     toolbar.setTitle(getItem().getTitle());
                     smsText = StringUtils.getSmsMessage(getItem());
-                }else
-                {
+                } else {
                     backImage.setVisibility(View.VISIBLE);
-                    setPrice(childs.get(position-1));
-                    toolbar.setTitle(childs.get(position-1).getTitle());
-                    smsText = StringUtils.getSmsMessage(childs.get(position-1));
+                    setPrice(childs.get(position - 1));
+                    toolbar.setTitle(childs.get(position - 1).getTitle());
+                    smsText = StringUtils.getSmsMessage(childs.get(position - 1));
                 }
-                if(position==childs.size()) {
+                if (position == childs.size()) {
 
                     forwardImage.setVisibility(View.INVISIBLE);
-                }
-                else {
+                } else {
                     forwardImage.setVisibility(View.VISIBLE);
                 }
 
             }
         });
-        DbSupport db=new DbSupport();
-       // db.writeNewPost("CODE002","HELLO","HTTP://WWW",12.9);
+        DbSupport db = new DbSupport();
+        // db.writeNewPost("CODE002","HELLO","HTTP://WWW",12.9);
         db.listenDataChange();
         return v;
     }
 
     private void setPrice(Item item) {
-        textPrice.setText(formater.format(item.getAmount())+" "+getActivity().getResources().getString(R.string.currency));
+        textPrice.setText(formater.format(item.getAmount()) + " " + getActivity().getResources().getString(R.string.currency));
         t.setVisibility(View.GONE);
-        if(item.getDiscount()>0 &&item.getDiscount()<item.getAmount()) {
+        if (item.getDiscount() > 0 && item.getDiscount() < item.getAmount()) {
 
             textPrice.setText(formater.format(item.getDiscount()) + " " + getResources().getString(R.string.currency));
             t.setText(formater.format(item.getAmount()) + " " + getResources().getString(R.string.currency));
@@ -474,8 +498,8 @@ public class DetailFragment extends Fragment {
     }
 
     private void sendViber(String smsText) {
-        Uri uri = Uri.parse("smsto:"+ ApplicationConfig.smsNumber);
-        Intent share = new Intent(Intent.ACTION_SEND,uri);
+        Uri uri = Uri.parse("smsto:" + ApplicationConfig.smsNumber);
+        Intent share = new Intent(Intent.ACTION_SEND, uri);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, smsText);
         share.setPackage("com.viber.voip");
@@ -486,7 +510,7 @@ public class DetailFragment extends Fragment {
         Intent smsIntent = new Intent(Intent.ACTION_VIEW);
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", ApplicationConfig.smsNumber);
-        smsIntent.putExtra("sms_body",smsText);
+        smsIntent.putExtra("sms_body", smsText);
         startActivity(smsIntent);
     }
 
@@ -539,7 +563,7 @@ public class DetailFragment extends Fragment {
         // Load the high-resolution "zoomed-in" image.
         final ImageView expandedImageView = (ImageView) getActivity().findViewById(R.id.expanded_image);
         // expandedImageView.setImageResource(imageResId);
-        ImageCache mImageCache= ImageCache.getInstance(getActivity().getSupportFragmentManager(), cacheParams);
+        ImageCache mImageCache = ImageCache.getInstance(getActivity().getSupportFragmentManager(), cacheParams);
         BitmapDrawable value = mImageCache.getBitmapFromMemCache(String.valueOf("https://s-media-cache-ak0.pinimg.com/564x/4c/84/03/4c84030879a89cf9dde78ca79b454340.jpg"));
         expandedImageView.setImageDrawable(value);
         // Calculate the starting and ending bounds for the zoomed-in image. This step
@@ -667,9 +691,6 @@ public class DetailFragment extends Fragment {
     }
 
 
-
-
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // END_INCLUDE (fragment_pager_adapter)
 
@@ -678,6 +699,7 @@ public class DetailFragment extends Fragment {
         }
 
         // BEGIN_INCLUDE (fragment_pager_adapter_getitem)
+
         /**
          * Get fragment corresponding to a specific position. This will be used to populate the
          * contents of the {@link ViewPager}.
@@ -694,35 +716,27 @@ public class DetailFragment extends Fragment {
 
             Fragment fragment = new DummySectionFragment();
             Bundle args = new Bundle();
-            String[] imageUrls=null;
-            if(position==0)
-            {
-               imageUrls= item.getImgUrl().split(" "); //parent The reason to split is to backward compatable
+            String[] imageUrls = null;
+            if (position == 0) {
+                imageUrls = item.getImgUrl().split(" "); //parent The reason to split is to backward compatable
+            } else if (position > 0) { //children
+                imageUrls = childs.get(position - 1).getImgUrl().split(" ");
             }
-            else if(position>0){ //children
-                imageUrls =childs.get(position-1).getImgUrl().split(" ");
-            }
-            args.putString(DummySectionFragment.URL,imageUrls[0]);
+            args.putString(DummySectionFragment.URL, imageUrls[0]);
             fragment.setArguments(args);
             return fragment;
         }
-        // END_INCLUDE (fragment_pager_adapter_getitem)
 
-        // BEGIN_INCLUDE (fragment_pager_adapter_getcount)
-        /**
-         * Get number of pages the {@link ViewPager} should render.
-         *
-         * @return Number of fragments to be rendered as pages.
-         */
         @Override
         public int getCount() {
             // Show 3 total pages.
             //To count parent+children
-            return childs.size()+1;
+            return childs.size() + 1;
         }
         // END_INCLUDE (fragment_pager_adapter_getcount)
 
         // BEGIN_INCLUDE (fragment_pager_adapter_getpagetitle)
+
         /**
          * Get title for each of the pages. This will be displayed on each of the tabs.
          *
@@ -732,34 +746,35 @@ public class DetailFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             /**
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return "ha";
-                case 1:
-                    return "funny";
-                case 2:
-                    return "happy";
+             Locale l = Locale.getDefault();
+             switch (position) {
+             case 0:
+             return "ha";
+             case 1:
+             return "funny";
+             case 2:
+             return "happy";
+             }
+             return null;
+             }
+             **/
+            Drawable myDrawable = getResources().getDrawable(R.drawable.fav_toggle_icon_off);
+            SpannableStringBuilder sb = new SpannableStringBuilder("1"); // space added before text for convenience
+            try {
+                myDrawable.setBounds(5, 5, myDrawable.getIntrinsicWidth(), myDrawable.getIntrinsicHeight());
+                ImageSpan span = new ImageSpan(myDrawable, DynamicDrawableSpan.ALIGN_BASELINE);
+                sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch (Exception e) {
+                // TODO: handle exception
             }
-            return null;
-        }
-**/
-        Drawable myDrawable = getResources().getDrawable(R.drawable.fav_toggle_icon_off);
-        SpannableStringBuilder sb = new SpannableStringBuilder("1" ); // space added before text for convenience
-        try {
-            myDrawable.setBounds(5, 5, myDrawable.getIntrinsicWidth(), myDrawable.getIntrinsicHeight());
-            ImageSpan span = new ImageSpan(myDrawable, DynamicDrawableSpan.ALIGN_BASELINE);
-            sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
             return sb;
-        // END_INCLUDE (fragment_pager_adapter_getpagetitle)
+            // END_INCLUDE (fragment_pager_adapter_getpagetitle)
+
+        }
 
     }
 
-    }
-    public static  class DummySectionFragment extends Fragment {
+    public static class DummySectionFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -769,37 +784,37 @@ public class DetailFragment extends Fragment {
         private Context context;
 
         private Animator mCurrentAnimator;
-        private int mShortAnimationDuration=1;
+        private int mShortAnimationDuration = 1;
 
         public DummySectionFragment() {
 
-            context=getActivity();
+            context = getActivity();
         }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_sliding_photo, container, false);
-            Bundle b=  getArguments();
-            url= b.getString(URL);
-           final  ZoomImageView slideImageView = (ZoomImageView) rootView.findViewById(R.id.slide1);
+            Bundle b = getArguments();
+            url = b.getString(URL);
+            final ZoomImageView slideImageView = (ZoomImageView) rootView.findViewById(R.id.slide1);
 
             Picasso.with(context)
                     .load(url)
-                  //  .networkPolicy(NetworkPolicy.)
+                    //  .networkPolicy(NetworkPolicy.)
                     .placeholder(R.drawable.placeholder)
-                   // .resize(850, 850)
-                  //  .centerCrop()
+                    // .resize(850, 850)
+                    //  .centerCrop()
                     .into(slideImageView);
 
             slideImageView.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                      public void onClick(View view) {
-                            zoomImageFromThumb(slideImageView, url);
-                       }
-                   });
+                @Override
+                public void onClick(View view) {
+                    zoomImageFromThumb(slideImageView, url);
+                }
+            });
             return rootView;
         }
-
 
 
         private void zoomImageFromThumb(final View thumbView, String url) {
@@ -811,9 +826,9 @@ public class DetailFragment extends Fragment {
             // Load the high-resolution "zoomed-in" image.
             final ImageView expandedImageView = (ImageView) getActivity().findViewById(R.id.expanded_image);
             // expandedImageView.setImageResource(imageResId);
-           // ImageCache mImageCache= ImageCache.getInstance(getActivity().getSupportFragmentManager(), cacheParams);
-          //  BitmapDrawable value = mImageCache.getBitmapFromMemCache(String.valueOf("https://s-media-cache-ak0.pinimg.com/564x/4c/84/03/4c84030879a89cf9dde78ca79b454340.jpg"));
-          //  expandedImageView.setImageDrawable(value);
+            // ImageCache mImageCache= ImageCache.getInstance(getActivity().getSupportFragmentManager(), cacheParams);
+            //  BitmapDrawable value = mImageCache.getBitmapFromMemCache(String.valueOf("https://s-media-cache-ak0.pinimg.com/564x/4c/84/03/4c84030879a89cf9dde78ca79b454340.jpg"));
+            //  expandedImageView.setImageDrawable(value);
 
             Picasso.with(context)
                     .load(url)
@@ -871,8 +886,8 @@ public class DetailFragment extends Fragment {
             set
                     .play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left,
                             finalBounds.left))
-                   // .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top,
-                   //         finalBounds.top))
+                    // .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top,
+                    //         finalBounds.top))
                     .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
                     .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f));
             set.setDuration(mShortAnimationDuration);
@@ -889,8 +904,8 @@ public class DetailFragment extends Fragment {
                 }
             });
             set.start();
-            this.getActivity().getIntent().putExtra("ZOOMED","y");
-           mCurrentAnimator = set;
+            this.getActivity().getIntent().putExtra("ZOOMED", "y");
+            mCurrentAnimator = set;
 
             // Upon clicking the zoomed-in image, it should zoom back down to the original bounds
             // and show the thumbnail instead of the expanded image.
@@ -930,7 +945,7 @@ public class DetailFragment extends Fragment {
                         }
                     });
 
-                    getActivity().getIntent().putExtra("ZOOMED","n");
+                    getActivity().getIntent().putExtra("ZOOMED", "n");
 
                     set.start();
                     mCurrentAnimator = set;
@@ -938,6 +953,24 @@ public class DetailFragment extends Fragment {
             });
         }
 
+    }
+    int mStackLevel=1;
+    void showDialog() {
+        mStackLevel++;
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = OrderFragment.newInstance(mStackLevel);
+        newFragment.show(ft, "dialog");
     }
 
 }
