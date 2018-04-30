@@ -20,6 +20,8 @@ android {
         }
     }
 }
+apply plugin: 'com.android.application'
+
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -43,6 +45,15 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:3.2.2'
     // Required only if Facebook login support is required
     compile 'com.facebook.android:facebook-android-sdk:4.27.0'
+
+    compile 'com.google.dagger:dagger-android:2.15'
+    compile 'com.google.dagger:dagger-android-support:2.15' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
     testCompile 'junit:junit:4.12'
+    annotationProcessor 'org.parceler:parceler:1.1.9'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'

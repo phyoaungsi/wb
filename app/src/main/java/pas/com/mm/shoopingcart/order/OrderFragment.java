@@ -1,15 +1,22 @@
 package pas.com.mm.shoopingcart.order;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import pas.com.mm.shoopingcart.R;
 
@@ -32,6 +39,9 @@ public class OrderFragment extends DialogFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Spinner spinner1, spinner2;
+    private Button okButton,cancelButton;
+    private View layout1, layout2;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -73,6 +83,7 @@ public class OrderFragment extends DialogFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -83,12 +94,16 @@ public class OrderFragment extends DialogFragment {
         WindowManager.LayoutParams p = getDialog().getWindow().getAttributes();
         p.width = ViewGroup.LayoutParams.MATCH_PARENT;
         p.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
-       // p.x = 300;
-        //p.y = 100;
+        // p.x = 300;
+        p.y = 50;
         getDialog().getWindow().setAttributes(p);
         getDialog().getWindow()
                 .getAttributes().windowAnimations = R.style.DialogAnimation;
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        setUpUI(view);
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -128,5 +143,42 @@ public class OrderFragment extends DialogFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    public void setUpUI(View view) {
+
+        okButton = view.findViewById(R.id.btnOK);
+        cancelButton=view.findViewById(R.id.btnCancel);
+        layout1 = view.findViewById(R.id.layout_size_select);
+        layout2 = view.findViewById(R.id.layout_size_chart);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout2.setVisibility(View.VISIBLE);
+                layout1.setVisibility(View.GONE);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDialog().dismiss();
+            }
+        });
+        spinner1 = (Spinner) view.findViewById(R.id.spinSize);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
+                Toast.makeText(parent.getContext(),
+                        "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }

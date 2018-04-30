@@ -5,6 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 /**
  * Created by phyo on 16/04/2018.
  */
+
+@Parcel
 @IgnoreExtraProperties
 public class OrderForm {
 
