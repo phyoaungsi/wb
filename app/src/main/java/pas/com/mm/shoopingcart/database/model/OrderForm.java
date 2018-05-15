@@ -6,20 +6,24 @@ import com.google.firebase.database.IgnoreExtraProperties;
  * Created by phyo on 16/04/2018.
  */
 
-@Parcel
+
 @IgnoreExtraProperties
-public class OrderForm {
+public class OrderForm extends Model {
 
     private String productId;
     private double amount;
     private int quantity;
     private String memberId;
-
+    private Item item;
     public OrderForm(String productId, double amount, int quantity, String memberId) {
         this.productId = productId;
         this.amount = amount;
         this.quantity = quantity;
         this.memberId = memberId;
+    }
+
+    public OrderForm() {
+
     }
 
     public String getProductId() {
@@ -53,4 +57,14 @@ public class OrderForm {
     public void setMemberId(String memberId) {
         this.memberId = memberId;
     }
+
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
 }

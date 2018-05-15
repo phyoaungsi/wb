@@ -99,7 +99,7 @@
             android:label="@string/title_activity_order"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".order.Basket"
+            android:name=".order.BasketActivity"
             android:label="@string/title_activity_basket"
             android:theme="@style/AppTheme"></activity>
     </application>

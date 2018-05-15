@@ -17,7 +17,11 @@
         android:title="@string/action_contact_title"
         app:showAsAction="always"/>
 
-
+    <item
+        android:id="@+id/action_basket"
+        android:icon="@drawable/ic_menu_send"
+        android:title="@string/action_contact_title"
+        app:showAsAction="always"/>
 
 
 </menu>

@@ -31,6 +31,7 @@ import pas.com.mm.shoopingcart.activities.saveitem.SaveItemActivity;
 import pas.com.mm.shoopingcart.database.DbSupport;
 import pas.com.mm.shoopingcart.database.model.NotificationModel;
 import pas.com.mm.shoopingcart.fragments.itemgrid.ConfigDbListener;
+import pas.com.mm.shoopingcart.order.BasketActivity;
 import pas.com.mm.shoopingcart.splash.NotiItemDbListener;
 import pas.com.mm.shoopingcart.splash.NotiPromoDbListener;
 import pas.com.mm.shoopingcart.util.FontUtil;
@@ -141,6 +142,12 @@ public class ItemGridView extends AppCompatActivity implements ImageGridFragment
         if (id == R.id.action_contact) {
 
             Intent intent = new Intent(this, ContactActivity.class);intent.putExtra("POSITION", id);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_basket) {
+
+            Intent intent = new Intent(this, BasketActivity.class);intent.putExtra("POSITION", id);
             startActivity(intent);
             return true;
         }
