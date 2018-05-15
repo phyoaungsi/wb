@@ -40,23 +40,25 @@ class BasketAdapter constructor(context_: Context,list_:List<OrderForm> ): Recyc
 
     override fun onBindViewHolder(holder: BasketAdapter.ViewHolder?, position: Int) {
 
-        holder?.title?.text=list.get(position).item.title
-        holder?.desc?.text=list.get(position).item.description
-        holder?.quantity?.text=list.get(position).quantity.toString()
+        if(list.get(position).item!=null) {
+            holder?.title?.text = list.get(position).item.title
+            holder?.desc?.text = list.get(position).item.description
+            holder?.quantity?.text = list.get(position).quantity.toString()
 
-        val mPicasso = Picasso.with(context)
-        // mPicasso.setIndicatorsEnabled(true);
-        // mPicasso.with(this.getmContext())
-        //  mPicasso.setLoggingEnabled(true);
+            val mPicasso = Picasso.with(context)
+            // mPicasso.setIndicatorsEnabled(true);
+            // mPicasso.with(this.getmContext())
+            //  mPicasso.setLoggingEnabled(true);
 
-        mPicasso.load(list.get(position).item.imgUrl)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.ic_menu_manage)
-                //   .networkPolicy(NetworkPolicy.OFFLINE)
+            mPicasso.load(list.get(position).item.imgUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.ic_menu_manage)
+                    //   .networkPolicy(NetworkPolicy.OFFLINE)
 
-                .resize(400, 400)
-                .centerCrop().transform(RoundedCornersTransform())
-                .into(holder?.image)
+                    .resize(400, 400)
+                    .centerCrop().transform(RoundedCornersTransform())
+                    .into(holder?.image)
+        }
     }
 
 
