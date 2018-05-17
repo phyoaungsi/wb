@@ -969,7 +969,8 @@ public class DetailFragment extends Fragment {
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = OrderFragment.newInstance(mStackLevel);
+        String prodId=this.getItem().getKey();
+        DialogFragment newFragment = OrderFragment.newInstance(prodId,"");
         newFragment.show(ft, "dialog");
     }
 

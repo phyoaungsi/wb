@@ -5,4 +5,5 @@ package pas.com.mm.shoopingcart.database.model;
  */
 
 public class Model {
+
 }

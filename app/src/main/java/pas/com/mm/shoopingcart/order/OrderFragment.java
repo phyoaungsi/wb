@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import pas.com.mm.shoopingcart.R;
+import pas.com.mm.shoopingcart.database.DbSupport;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +31,11 @@ import pas.com.mm.shoopingcart.R;
 public class OrderFragment extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String PRODUCT_ID = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mProductId;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -50,15 +51,15 @@ public class OrderFragment extends DialogFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param productId Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment OrderFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrderFragment newInstance(String param1, String param2) {
+    public static OrderFragment newInstance(String productId, String param2) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(PRODUCT_ID, productId);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -79,7 +80,7 @@ public class OrderFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mProductId = getArguments().getString(PRODUCT_ID);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
@@ -154,8 +155,12 @@ public class OrderFragment extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layout2.setVisibility(View.VISIBLE);
-                layout1.setVisibility(View.GONE);
+              //  layout2.setVisibility(View.VISIBLE);
+               // layout1.setVisibility(View.GONE);
+
+                DbSupport db=new DbSupport();
+                db.orderNewProduct(mProductId,12.0,9);
+                getDialog().dismiss();
             }
         });
 
