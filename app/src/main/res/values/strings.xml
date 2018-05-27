@@ -84,4 +84,7 @@ Yangon, Myanmar</string>
         <item>India</item>
     </string-array>
     <string name="title_activity_basket">Basket</string>
+    <string name="subtotal">Sub Total</string>
+    <string name="total_quantity">Total Quantity</string>
+    <string name="payment_method">PaymentMethod</string>
 </resources>
