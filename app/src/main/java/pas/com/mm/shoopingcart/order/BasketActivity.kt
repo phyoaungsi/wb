@@ -39,10 +39,13 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
         mQuantityText=findViewById<TextView>(R.id.quantity_amount_label)
         mDeliveryTypeSpinner=findViewById<Spinner>(R.id.delivery_type_spinner)
         val items = ArrayList<OrderForm>()
-        adapter = BasketAdapter(this.baseContext, items)
+        adapter = BasketAdapter(this, items)
 
         gridview?.adapter = adapter
-        gridview?.layoutManager = LinearLayoutManager(this)
+        var mLayout:LinearLayoutManager=LinearLayoutManager(this)
+       mLayout.isSmoothScrollbarEnabled=false
+        gridview?.layoutManager = mLayout
+
         val user = FirebaseAuth.getInstance().currentUser
 
         var ddlList = mutableListOf<NameValue>()
@@ -67,8 +70,8 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
     override fun initDataLoaded(list: MutableList<OrderForm>) {
 
         basketList=list;
-        for(i in 0..basketList.size-1){
-            db.getItemById(basketList.get(i),this)
+        for(i in 0 until basketList.size){
+            db.getItemById(basketList[i],this)
         }
     }
 
@@ -77,8 +80,8 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
          var subtotal: Double =0.0
         var qty: Int =0
         for(order in basketList){
-           subtotal=subtotal+ order.amount
-            qty=qty+order.quantity
+            subtotal += order.amount
+            qty += order.quantity
         }
         mSubtotalText?.text=subtotal.toString()
         mQuantityText!!.text=qty.toString()

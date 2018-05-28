@@ -87,4 +87,10 @@ Yangon, Myanmar</string>
     <string name="subtotal">Sub Total</string>
     <string name="total_quantity">Total Quantity</string>
     <string name="payment_method">PaymentMethod</string>
+    <string name="checkout">Checkout</string>
+    <string name="home_address">Home Address</string>
+    <string name="street">Street</string>
+    <string name="town_city">Town/City</string>
+    <string name="township">Township</string>
+    <string name="state_district">State/District</string>
 </resources>
