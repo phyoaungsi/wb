@@ -134,7 +134,9 @@
                 android:layout_margin="1px"
                 android:background="@android:color/background_light"
                 android:orientation="vertical">
-
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/address_editText"
                     android:layout_width="match_parent"
@@ -143,7 +145,10 @@
                     android:ems="10"
                     android:hint="@string/home_address"
                     android:inputType="text" />
-
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/street_editText"
                     android:layout_width="match_parent"
@@ -152,8 +157,10 @@
                     android:ems="10"
                     android:hint="@string/street"
                     android:inputType="text" />
-
-
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/town_city_editText"
                     android:layout_width="match_parent"
@@ -162,7 +169,10 @@
                     android:ems="10"
                     android:hint="@string/town_city"
                     android:inputType="text" />
-
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/township_editText"
                     android:layout_width="match_parent"
@@ -171,7 +181,10 @@
                     android:ems="10"
                     android:hint="@string/township"
                     android:inputType="text" />
-
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/state_editText"
                     android:layout_width="match_parent"
@@ -180,6 +193,7 @@
                     android:ems="10"
                     android:hint="@string/state_district"
                     android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
 

@@ -23,7 +23,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="select_size">Size</string>
-
+    <string name="select_color">Color</string>
     <string name="title_activity_main2">Main2Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -74,14 +74,19 @@ Yangon, Myanmar</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string-array name="size_arrays">
-        <item>Malaysia</item>
-        <item>United States</item>
-        <item>Indonesia</item>
-        <item>France</item>
-        <item>Italy</item>
-        <item>Singapore</item>
-        <item>New Zealand</item>
-        <item>India</item>
+        <item>XXS</item>
+        <item>XS</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+
+    </string-array>
+    <string-array name="color_arrays">
+        <item>Red</item>
+        <item>White</item>
+        <item>Blue</item>
+        <item>Gray</item>
     </string-array>
     <string name="title_activity_basket">Basket</string>
     <string name="subtotal">Sub Total</string>
@@ -93,4 +98,5 @@ Yangon, Myanmar</string>
     <string name="town_city">Town/City</string>
     <string name="township">Township</string>
     <string name="state_district">State/District</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
 </resources>

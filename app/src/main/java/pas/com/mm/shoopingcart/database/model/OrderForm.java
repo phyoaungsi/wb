@@ -15,6 +15,9 @@ public class OrderForm extends Model {
     private int quantity;
     private String memberId;
     private Item item;
+
+
+    private String key;
     public OrderForm(String productId, double amount, int quantity, String memberId) {
         this.productId = productId;
         this.amount = amount;
@@ -67,4 +70,11 @@ public class OrderForm extends Model {
         this.item = item;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

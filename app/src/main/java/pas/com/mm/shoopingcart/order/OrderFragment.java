@@ -17,8 +17,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import pas.com.mm.shoopingcart.R;
 import pas.com.mm.shoopingcart.database.DbSupport;
+import pas.com.mm.shoopingcart.database.model.OrderForm;
+import pas.com.mm.shoopingcart.stockdetail.ProductDetailPresenter;
+import pas.com.mm.shoopingcart.stockdetail.ProductDetailView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +34,7 @@ import pas.com.mm.shoopingcart.database.DbSupport;
  * Use the {@link OrderFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderFragment extends DialogFragment {
+public class OrderFragment extends DialogFragment implements ProductDetailView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PRODUCT_ID = "param1";
@@ -42,7 +48,9 @@ public class OrderFragment extends DialogFragment {
     private Spinner spinner1, spinner2;
     private Button okButton,cancelButton;
     private View layout1, layout2;
-
+    private ProductDetailPresenter mProductDetailRepo;
+    private ProductDetailView mView;
+    String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
     public OrderFragment() {
         // Required empty public constructor
     }
@@ -89,7 +97,7 @@ public class OrderFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        mProductDetailRepo=new ProductDetailPresenter();
         getDialog().getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         WindowManager.LayoutParams p = getDialog().getWindow().getAttributes();
         p.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -102,6 +110,7 @@ public class OrderFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         setUpUI(view);
+        mView=this;
         return view;
 
     }
@@ -128,6 +137,19 @@ public class OrderFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void setResult(OrderForm order) {
+        if(order!=null){
+
+           mProductDetailRepo.updateItem(order.getKey(),order.getQuantity()+1,user_id);
+        }
+        else{
+            DbSupport db=new DbSupport();
+            db.orderNewProduct(mProductId,12.0,1);
+        }
+        getDialog().dismiss();
     }
 
     /**
@@ -158,9 +180,10 @@ public class OrderFragment extends DialogFragment {
               //  layout2.setVisibility(View.VISIBLE);
                // layout1.setVisibility(View.GONE);
 
-                DbSupport db=new DbSupport();
-                db.orderNewProduct(mProductId,12.0,9);
-                getDialog().dismiss();
+
+
+                mProductDetailRepo.getExisistingItemById(mProductId,user_id,mView);
+
             }
         });
 

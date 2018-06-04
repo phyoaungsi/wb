@@ -101,6 +101,10 @@
         <activity
             android:name=".order.BasketActivity"
             android:label="@string/title_activity_basket"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".userprofile.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
             android:theme="@style/AppTheme"></activity>
     </application>
 

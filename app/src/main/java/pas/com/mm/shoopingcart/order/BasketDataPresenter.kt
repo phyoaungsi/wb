@@ -1,4 +1,8 @@
-package pas.com.mm.shoopingcart.order
+package pas.c
+
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ValueEventListener
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -9,6 +13,7 @@ import pas.com.mm.shoopingcart.database.model.BasketModel
 import pas.com.mm.shoopingcart.database.model.Config
 import pas.com.mm.shoopingcart.database.model.Item
 import pas.com.mm.shoopingcart.database.model.OrderForm
+import pas.com.mm.shoopingcart.order.BasketDataCallBack
 import java.util.*
 
 
@@ -84,7 +89,7 @@ class BasketDataPresenter {
 
     }
 
-    fun loadBasket(cb: BasketDataCallBack?,userId: String?) {
+    fun loadBasket(cb: BasketDataCallBack?, userId: String?) {
         try {
             database.setPersistenceEnabled(true)
 
@@ -95,13 +100,17 @@ class BasketDataPresenter {
         var list: MutableList<OrderForm> = ArrayList()
         val cartDataListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val genericTypeIndicator = object : GenericTypeIndicator<HashMap<String,OrderForm>>() { }
+                val genericTypeIndicator = object : GenericTypeIndicator<HashMap<String, OrderForm>>() { }
                 val posts = dataSnapshot.getValue(genericTypeIndicator)
                 list = ArrayList()
                 if (posts != null) {
-                    for (i in posts.values) {
+                    for (i in posts.keys) {
+                      var order: OrderForm? =  posts.get(i)
+                    // var order?: OrderForm=
                       //  Log.d("DBSupport", i.getDescription())
-                        list.add(i)
+                        order?.key  =i
+
+                        list.add(order!!)
                     }
                 }
                 cb?.initDataLoaded(list)
@@ -120,6 +129,23 @@ class BasketDataPresenter {
         try {
             val myRef = database.getReference("orders/"+userId+"/")
             myRef.addValueEventListener(cartDataListener)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+
+    fun removeCartItem(userId: String?,productId:String?) {
+        try {
+            database.setPersistenceEnabled(true)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            val myRef = database.getReference("orders/"+userId+"/"+productId+"/")
+            myRef.setValue(null)
         } catch (e: Exception) {
             e.printStackTrace()
         }

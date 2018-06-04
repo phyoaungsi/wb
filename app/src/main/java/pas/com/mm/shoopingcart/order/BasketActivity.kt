@@ -10,6 +10,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_basket.*
+import pas.c.BasketDataPresenter
 import pas.com.mm.shoopingcart.R
 import pas.com.mm.shoopingcart.database.model.Model
 import pas.com.mm.shoopingcart.database.model.OrderForm
@@ -45,7 +46,7 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
         var mLayout:LinearLayoutManager=LinearLayoutManager(this)
        mLayout.isSmoothScrollbarEnabled=false
         gridview?.layoutManager = mLayout
-
+        gridview?.isNestedScrollingEnabled=false
         val user = FirebaseAuth.getInstance().currentUser
 
         var ddlList = mutableListOf<NameValue>()

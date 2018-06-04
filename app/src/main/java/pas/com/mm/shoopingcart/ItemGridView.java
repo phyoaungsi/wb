@@ -2,6 +2,8 @@ package pas.com.mm.shoopingcart;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -12,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,12 +38,17 @@ import pas.com.mm.shoopingcart.fragments.itemgrid.ConfigDbListener;
 import pas.com.mm.shoopingcart.order.BasketActivity;
 import pas.com.mm.shoopingcart.splash.NotiItemDbListener;
 import pas.com.mm.shoopingcart.splash.NotiPromoDbListener;
+import pas.com.mm.shoopingcart.userprofile.UserProfileActivity;
 import pas.com.mm.shoopingcart.util.FontUtil;
 import android.support.annotation.NonNull;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 
@@ -48,6 +57,7 @@ public class ItemGridView extends AppCompatActivity implements ImageGridFragment
     private static final String TAG = "ImageGridActivity";
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
+    ImageView mImageView;
     Context mContext;
     private static final String IS_PROMOTION_CONFIG_KEY = "is_promotion_on";
     private String isPromotionOn="invalid";
@@ -62,7 +72,39 @@ public class ItemGridView extends AppCompatActivity implements ImageGridFragment
         FontUtil.setText(this.getBaseContext(),toolbar,false);
       Log.i("ItemGridVIEW","oNCREATE----");
 
+
+      mImageView=this.findViewById(R.id.profile_image);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
      //  initRemoteConfig();
+        Picasso.with(this)
+                .load(user.getPhotoUrl())
+                //  .networkPolicy(NetworkPolicy.)
+                .placeholder(R.drawable.back_48)
+                .into(mImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Bitmap imageBitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                        imageDrawable.setCircular(true);
+                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                        mImageView.setImageDrawable(imageDrawable);
+                    }
+                    @Override
+                    public void onError() {
+                        mImageView.setImageResource(R.drawable.fav_icon_title);
+                    }
+                });
+
+        mImageView.setOnClickListener((View v) ->{
+
+            Intent intent = new Intent(this, UserProfileActivity.class);
+
+            startActivity(intent);
+
+
+        });
+                // .resize(850, 850)
+                //  .centerCrop()
 
         // ViewPager and its adapters use support library
         // fragments, so use getSupportFragmentManager.
