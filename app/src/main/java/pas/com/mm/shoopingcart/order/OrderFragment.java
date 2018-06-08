@@ -1,7 +1,13 @@
 package pas.com.mm.shoopingcart.order;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,17 +15,24 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
+import pas.com.mm.shoopingcart.DetailFragment;
 import pas.com.mm.shoopingcart.R;
 import pas.com.mm.shoopingcart.database.DbSupport;
 import pas.com.mm.shoopingcart.database.model.OrderForm;
@@ -73,6 +86,15 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
         return fragment;
     }
 
+    public DetailFragment getDetailFragment() {
+        return detailFragment;
+    }
+
+    public void setDetailFragment(DetailFragment detailFragment) {
+        this.detailFragment = detailFragment;
+    }
+
+    DetailFragment detailFragment;
     public static OrderFragment newInstance(int num) {
         OrderFragment f = new OrderFragment();
 
@@ -91,7 +113,7 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
             mProductId = getArguments().getString(PRODUCT_ID);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -149,7 +171,9 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
             DbSupport db=new DbSupport();
             db.orderNewProduct(mProductId,12.0,1);
         }
-        getDialog().dismiss();
+      if(getDialog()!=null) {
+          getDialog().dismiss();
+      }
     }
 
     /**
@@ -183,6 +207,8 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
 
 
                 mProductDetailRepo.getExisistingItemById(mProductId,user_id,mView);
+                getDialog().dismiss();
+                detailFragment.jumeImageToBasket();
 
             }
         });
@@ -197,9 +223,7 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
-                Toast.makeText(parent.getContext(),
-                        "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
-                        Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -208,4 +232,6 @@ public class OrderFragment extends DialogFragment implements ProductDetailView {
             }
         });
     }
+
+
 }

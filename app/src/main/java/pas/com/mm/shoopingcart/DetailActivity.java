@@ -33,6 +33,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import com.google.gson.Gson;
 
 import java.util.Locale;
 
+import pas.com.mm.shoopingcart.common.view.CircularTextView;
 import pas.com.mm.shoopingcart.database.DbSupport;
 import pas.com.mm.shoopingcart.database.model.Item;
 import pas.com.mm.shoopingcart.fragments.DescriptionFragment;
@@ -51,6 +53,9 @@ import pas.com.mm.shoopingcart.order.OrderFragment;
 import pas.com.mm.shoopingcart.util.FontUtil;
 import pas.com.mm.shoopingcart.util.ImageCache;
 import pas.com.mm.shoopingcart.util.ImageFetcher;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class DetailActivity extends AppCompatActivity implements DetailFragment.OnFragmentInteractionListener, DescriptionFragment.OnFragmentInteractionListener,OrderFragment.OnFragmentInteractionListener {
     private static final String TAG = "DetailActivity";
@@ -166,5 +171,47 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     }
 
     private Item item;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
+    }
+
+    private FrameLayout redCircle;
+    private CircularTextView countTextView;
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem alertMenuItem = menu.findItem(R.id.action_basket);
+        FrameLayout badgeLayout = (FrameLayout) alertMenuItem.getActionView();
+
+        if (badgeLayout != null) {
+            redCircle =  badgeLayout.findViewById(R.id.view_alert_red_circle);
+            countTextView =  badgeLayout.findViewById(R.id.view_alert_count_textview);
+            countTextView.setStrokeWidth(1);
+            countTextView.setStrokeColor("#0F0F0F"); // gray
+            countTextView.setSolidColor("#ffffff"); // black
+
+            updateCartAlertIcon(1);
+
+            badgeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onOptionsItemSelected(alertMenuItem);
+                }
+            });
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void updateCartAlertIcon(int count) {
+        if (countTextView != null) {
+            String value = String.format("%d", count);
+            countTextView.setText(value);
+            redCircle.setVisibility((count > 0) ? VISIBLE : GONE);
+        }
+    }
 }
 
