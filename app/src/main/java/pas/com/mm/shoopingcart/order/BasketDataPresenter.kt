@@ -166,19 +166,21 @@ class BasketDataPresenter {
                 // TODO: handle the post
 
                 val dbResult = dataSnapshot.getValue(Item::class.java)
-                r.amount = dbResult!!.amount
-                r.setCode(dbResult.getCode())
-                r.setDescription(dbResult.getDescription())
-                r.setDiscount(dbResult.getDiscount()!!)
-                r.setHtmlDetail(dbResult.getHtmlDetail())
-                r.setImgUrl(dbResult.getImgUrl())
-                r.setTitle(dbResult.getTitle())
-                r.setKey(dataSnapshot.key)
-                val list = dbResult.getChildren()
-                r.setChildren(list)
-                result = r
-                order.item=result
-                callback.onBasketRecyclerChange()
+              if(dbResult!=null) {
+                  r.amount = dbResult!!.amount
+                  r.setCode(dbResult.getCode())
+                  r.setDescription(dbResult.getDescription())
+                  r.setDiscount(dbResult.getDiscount()!!)
+                  r.setHtmlDetail(dbResult.getHtmlDetail())
+                  r.setImgUrl(dbResult.getImgUrl())
+                  r.setTitle(dbResult.getTitle())
+                  r.setKey(dataSnapshot.key)
+                  val list = dbResult.getChildren()
+                  r.setChildren(list)
+                  result = r
+                  order.item = result
+                  callback.onBasketRecyclerChange()
+              }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

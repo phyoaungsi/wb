@@ -171,18 +171,18 @@
             android:alpha="0.9">
 
             <Button
-                android:text="@string/btnDetail"
                 android:id="@+id/btnDesc"
-
                 style="@style/Base.TextAppearance.AppCompat.Caption"
-                android:visibility="visible"
-                android:textColor="#ffffff"
-                android:background="#4a148c"
+
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:elevation="1dp" />
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary"
+                android:elevation="1dp"
+                android:text="@string/btnDetail"
+                android:textColor="#ffffff"
+                android:visibility="visible" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="100dp"
@@ -252,7 +252,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:background="#4a148c"
+                android:background="@color/colorPrimary"
                 android:elevation="1dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingLeft="12dp"

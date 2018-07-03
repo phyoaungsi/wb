@@ -29,8 +29,10 @@
                 android:id="@+id/btnOK"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:background="@android:color/transparent"
-                android:text="@string/ok" />
+                android:text="@string/ok"
+                android:textColor="@color/colorPrimary" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -41,8 +43,10 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:background="@android:color/transparent"
-                android:text="@string/cancel" />
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimary" />
 
 
         </LinearLayout>

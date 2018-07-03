@@ -1005,8 +1005,8 @@ public class DetailFragment extends Fragment {
         // final bounds are the global visible rectangle of the container view. Also
         // set the container view's offset as the origin for the bounds, since that's
         // the origin for the positioning animation properties (X, Y).
-        View   item = getActivity().findViewById(R.id.pager);
-
+       // View   item = getActivity().findViewById(R.id.pager);
+        final ZoomImageView item = (ZoomImageView) getActivity().findViewById(R.id.slide1);
         getActivity().findViewById(R.id.container).getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
@@ -1035,7 +1035,7 @@ public class DetailFragment extends Fragment {
 
         // Hide the thumbnail and show the zoomed-in view. When the animation begins,
         // it will position the zoomed-in view in the place of the thumbnail.
-        item.setAlpha(0f);
+        item.setAlpha(1f);
         expandedImageView.setVisibility(View.VISIBLE);
 
         // Set the pivot point for SCALE_X and SCALE_Y transformations to the top-left corner of
