@@ -38,6 +38,7 @@ import pas.com.mm.shoopingcart.fragments.itemgrid.ConfigDbListener;
 import pas.com.mm.shoopingcart.order.BasketActivity;
 import pas.com.mm.shoopingcart.splash.NotiItemDbListener;
 import pas.com.mm.shoopingcart.splash.NotiPromoDbListener;
+import pas.com.mm.shoopingcart.splash.SplashScreen;
 import pas.com.mm.shoopingcart.userprofile.UserProfileActivity;
 import pas.com.mm.shoopingcart.util.FontUtil;
 import android.support.annotation.NonNull;
@@ -61,6 +62,12 @@ public class ItemGridView extends AppCompatActivity implements ImageGridFragment
     Context mContext;
     private static final String IS_PROMOTION_CONFIG_KEY = "is_promotion_on";
     private String isPromotionOn="invalid";
+
+
+    public  static void startActivity(Context context){
+        Intent mainIntent = new Intent(context,ItemGridView.class);
+        context.startActivity(mainIntent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,8 @@
 package pas.com.mm.shoopingcart.order
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,6 +10,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
+import butterknife.ButterKnife
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_basket.*
 import pas.c.BasketDataPresenter
@@ -16,6 +20,9 @@ import pas.com.mm.shoopingcart.database.model.Model
 import pas.com.mm.shoopingcart.database.model.OrderForm
 import pas.com.mm.shoopingcart.order.adapter.NameValue
 import pas.com.mm.shoopingcart.order.adapter.PaymentTypeAdapter
+import butterknife.OnClick
+import pas.com.mm.shoopingcart.ItemGridView
+
 
 class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
 
@@ -33,6 +40,7 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar)
 
         gridview = findViewById<View>(R.id.recycle_basket) as RecyclerView
@@ -92,5 +100,17 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    @OnClick(R.id.comfirm_order)
+    fun submit(view: View) {
+
+      var    builder :AlertDialog.Builder =  AlertDialog.Builder(this)
+        builder.setMessage(this.getString(R.string.order_completed))
+        builder.setPositiveButton(R.string.ok){Dialog,  which ->
+        ItemGridView.startActivity(this)}
+        builder.setNegativeButton(R.string.cancel) { Dialog, which ->
+        }
+        var  dialog:AlertDialog = builder.create()
+        dialog.show()
+    }
 
 }

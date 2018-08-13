@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="order_successful_thank_you" type="id">Thank You!You order is processing.</item>
+</resources>
