@@ -11,5 +11,6 @@
     <color name="colorBackground">#f3e5f5</color>
     <color name="text_color_primary">#000000</color>
     <color name="text_color_secondary">#000000</color>
+    <color name="holo_green_light">#bc477b</color>
 
 </resources>

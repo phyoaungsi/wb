@@ -8,4 +8,5 @@ interface BasketDataCallBack {
     abstract fun initDataLoaded(list: MutableList<OrderForm>)
     abstract fun onBasketRecyclerChange()
     abstract fun receiveResult(model: Model)
+    abstract fun successCheckout()
 }

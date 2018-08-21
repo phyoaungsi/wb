@@ -14,24 +14,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
-import pas.c.BasketDataPresenter
+
 import pas.com.mm.shoopingcart.R
 import pas.com.mm.shoopingcart.database.model.OrderForm
 import pas.com.mm.shoopingcart.image.RoundedCornersTransform
+import pas.com.mm.shoppingcart.order.BasketDataPresenter
 
 class BasketAdapter constructor(context_: Context,list_:List<OrderForm> ): RecyclerView.Adapter<BasketAdapter.ViewHolder>() {
 
 
     var list = list_
     var context:Context=context_
-    var basketPresenter:BasketDataPresenter= BasketDataPresenter()
+    var basketPresenter: BasketDataPresenter = BasketDataPresenter()
     override fun getItemId(p0: Int): Long {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.cart_recycler_item, parent, false))
     }
 
@@ -45,7 +46,7 @@ class BasketAdapter constructor(context_: Context,list_:List<OrderForm> ): Recyc
 
     }
 
-    override fun onBindViewHolder(holder: BasketAdapter.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         if(list.get(position).item!=null) {
             holder?.title?.text = list.get(position).item.title

@@ -100,4 +100,5 @@ Yangon, Myanmar</string>
     <string name="state_district">State/District</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="order_completed">Thank you, your order has been processing.</string>
+    <string name="empty_cart">Shopping cart is empty.</string>
 </resources>

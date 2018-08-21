@@ -1,27 +1,38 @@
-package pas.c
+package pas.com.mm.shoppingcart.order
 
+import android.support.annotation.NonNull
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 
 import android.util.Log
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.FirebaseFunctionsException
 import pas.com.mm.shoopingcart.common.ApplicationConfig
 import pas.com.mm.shoopingcart.database.DBListenerCallback
-import pas.com.mm.shoopingcart.database.model.BasketModel
 import pas.com.mm.shoopingcart.database.model.Config
 import pas.com.mm.shoopingcart.database.model.Item
 import pas.com.mm.shoopingcart.database.model.OrderForm
 import pas.com.mm.shoopingcart.order.BasketDataCallBack
 import java.util.*
+import com.google.firebase.functions.HttpsCallableResult
 
 
-class BasketDataPresenter {
+
+
+
+public class BasketDataPresenter {
     internal var database = FirebaseDatabase.getInstance()
+    internal var mFunctions = FirebaseFunctions.getInstance()
     var result: Item? = null
     var item: Item=Item()
     var resultList: List<*>? = null
+
     fun writeMessage() {
 
         val myRef = database.getReference("message/items/")
@@ -338,8 +349,8 @@ class BasketDataPresenter {
         val user = FirebaseAuth.getInstance().currentUser
         val currentLoginMember = user!!.uid
         val order = OrderForm(productId, amount, quantity, currentLoginMember)
-        val key = mDatabase.child("orders").child(currentLoginMember).push().key
-        mDatabase.child("orders").child(currentLoginMember).child(key).setValue(order)
+        val key:String? = mDatabase.child("orders").child(currentLoginMember).push().key
+        mDatabase.child("orders").child(currentLoginMember).child(key!!).setValue(order)
     }
 
     companion object {
@@ -349,5 +360,60 @@ class BasketDataPresenter {
 
 
 
+    }
+
+
+    public fun checkout()
+    {
+
+        val user = FirebaseAuth.getInstance().currentUser
+        addMessage(user!!.uid)
+                .addOnCompleteListener(  {
+
+                        if (!it.isSuccessful()) {
+                           var e= it.exception
+
+                            if (e is FirebaseFunctionsException) {
+                                 var ffe:FirebaseFunctionsException =  e as FirebaseFunctionsException
+                                 var  code: FirebaseFunctionsException.Code  = ffe.code
+                                var details:Any? = ffe.details
+                            }
+
+                            // [START_EXCLUDE]
+                            Log.w(TAG, "addMessage:onFailure", e);
+
+                            return@addOnCompleteListener;
+                            // [END_EXCLUDE]
+                        }
+
+                        // [START_EXCLUDE]
+
+                        var result:String = it.getResult();
+                        callback!!.successCheckout()
+                        //mMessageOutputField.setText(result);
+                        // [END_EXCLUDE]
+
+                });
+        // [END call_add_message]
+    }
+     var callback:BasketDataCallBack?=null;
+    private fun addMessage(text: String): Task<String> {
+        // Create the arguments to the callable function.
+        val data = HashMap<Any,Any>()
+        data.put("user", text)
+        data.put("push", true)
+
+        return mFunctions
+                .getHttpsCallable("checkout")
+                .call(data)
+                .continueWith(object : Continuation<HttpsCallableResult, String> {
+                    @Throws(Exception::class)
+                    override fun then(task: Task<HttpsCallableResult>): String {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        return task.getResult().data.toString()
+                    }
+                })
     }
 }
