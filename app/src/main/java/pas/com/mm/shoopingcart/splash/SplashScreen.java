@@ -257,18 +257,29 @@ public class SplashScreen extends AppCompatActivity implements DBListenerCallbac
 
     @Override
     public void LoadCompleted(boolean b) {
-        if(b){
+        if(b) {
 
-          //  SplashScreen.this.startActivity(mainIntent);
+            //  SplashScreen.this.startActivity(mainIntent);
             //SplashScreen.this.finish();
 
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                   RC_SIGN_IN);
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                Intent mainIntent = new Intent(SplashScreen.this,ItemGridView.class);
+                mainIntent.putExtra("TITLE", this.getIntent().getStringExtra("TITLE"));
+                mainIntent.putExtra("BODY",this.getIntent().getStringExtra("BODY"));
+                mainIntent.putExtra("CONTENT",this.getIntent().getStringExtra("CONTENT"));
+                mainIntent.putExtra("TYPE",this.getIntent().getStringExtra("TYPE"));
+                mainIntent.putExtra("MAIN_IMAGE",this.getIntent().getStringExtra("MAIN_IMAGE"));
+                SplashScreen.this.startActivity(mainIntent);
+                SplashScreen.this.finish();
+            } else {
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setAvailableProviders(providers)
+                                .build(),
+                        RC_SIGN_IN);
 
+            }
         }
     }
 

@@ -20,6 +20,7 @@ import pas.com.mm.shoopingcart.order.adapter.PaymentTypeAdapter
 import butterknife.OnClick
 import kotlinx.android.synthetic.main.content_basket.*
 import pas.com.mm.shoopingcart.ItemGridView
+import pas.com.mm.shoopingcart.database.model.UserProfile
 import pas.com.mm.shoppingcart.order.BasketDataPresenter
 
 
@@ -76,6 +77,7 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
         comfirm_order.setOnClickListener( { view-> db.checkout()})
 
         db.loadBasket(this, user?.uid);
+        db.retrieveUserProfile(this)
 
     }
 
@@ -144,5 +146,11 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
     override fun successCheckout() {
 
         submit()
+    }
+
+    override fun setUserInfo(post: UserProfile) {
+        lblUserName.setText(FirebaseAuth.getInstance().currentUser!!.displayName)
+        lblAddress.setText(post.address)
+        lblPhone.setText(post.phone)
     }
 }

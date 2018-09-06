@@ -6,7 +6,7 @@
     <string name="favourities">ၾကိဳက္နွစ္သက္သည္မ်ား</string>
     <string name="action_contact_title">ဆက္သြယ္ရန္</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="name">Hello blank fragment</string>
+    <string name="name">Name</string>
     <string name="price">Hello blank fragment</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">  </string>
@@ -101,4 +101,11 @@ Yangon, Myanmar</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="order_completed">Thank you, your order has been processing.</string>
     <string name="empty_cart">Shopping cart is empty.</string>
+    <string name="user_profile_save">User Profile has been saved.</string>
+    <string name="save">Save</string>
+    <string name="address">Address</string>
+    <string name="email">Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="gender">Gender</string>
+    <string name="delivery_address">Delivery Address</string>
 </resources>

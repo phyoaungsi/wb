@@ -134,66 +134,28 @@
                 android:layout_margin="1px"
                 android:background="@android:color/background_light"
                 android:orientation="vertical">
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/address_editText"
+                <TextView
+                    android:id="@+id/lblDeliveryAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/home_address"
-                    android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/street_editText"
+                    android:text="@string/delivery_address" />
+                <TextView
+                    android:id="@+id/lblUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/street"
-                    android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/town_city_editText"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/lblAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/town_city"
-                    android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/township_editText"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/lblPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/township"
-                    android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/state_editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/state_district"
-                    android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
+                    android:text="TextView" />
             </LinearLayout>
 
 
@@ -208,6 +170,8 @@
             android:text="@string/checkout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
     </LinearLayout>
 
 

@@ -21,9 +21,7 @@ import pas.com.mm.shoopingcart.database.model.OrderForm
 import pas.com.mm.shoopingcart.order.BasketDataCallBack
 import java.util.*
 import com.google.firebase.functions.HttpsCallableResult
-
-
-
+import pas.com.mm.shoopingcart.database.model.UserProfile
 
 
 public class BasketDataPresenter {
@@ -415,5 +413,40 @@ public class BasketDataPresenter {
                         return task.getResult().data.toString()
                     }
                 })
+    }
+
+
+    public fun retrieveUserProfile(callback: BasketDataCallBack)
+    {
+        var user= FirebaseAuth.getInstance().currentUser!!.uid
+        var mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user);
+
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                val post = dataSnapshot.getValue(UserProfile::class.java)
+                var p: UserProfile = UserProfile()
+                p.address=post!!.address
+
+
+                callback!!.setUserInfo(post)
+                // [START_EXCLUDE]
+                //   mAuthorView.setText(post.author)
+                //  mTitleView.setText(post.title)
+                //   mBodyView.setText(post.body)
+                // [END_EXCLUDE]
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // [START_EXCLUDE]
+                // Toast.makeText(this@PostDetailActivity, "Failed to load post.",
+                //       Toast.LENGTH_SHORT).show()
+                // [END_EXCLUDE]
+            }
+        }
+        mDatabase!!.addValueEventListener(postListener)
     }
 }
