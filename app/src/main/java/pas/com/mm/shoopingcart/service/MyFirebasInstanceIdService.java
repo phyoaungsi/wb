@@ -18,11 +18,15 @@ package pas.com.mm.shoopingcart.service;
 
         import android.util.Log;
 
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
         import com.google.firebase.iid.FirebaseInstanceId;
         import com.google.firebase.iid.FirebaseInstanceIdService;
+        import com.google.firebase.messaging.FirebaseMessagingService;
 
 
-public class MyFirebasInstanceIdService extends FirebaseInstanceIdService {
+public class MyFirebasInstanceIdService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseIIDService";
 
@@ -33,7 +37,7 @@ public class MyFirebasInstanceIdService extends FirebaseInstanceIdService {
      */
     // [START refresh_token]
     @Override
-    public void onTokenRefresh() {
+    public void onNewToken(String token) {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
@@ -55,5 +59,11 @@ public class MyFirebasInstanceIdService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
+
+       String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users/"+userId+"/instance_id");
+
+        myRef.setValue(token);
     }
 }

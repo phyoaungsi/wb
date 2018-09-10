@@ -40,10 +40,10 @@ class UserProfilePresenter{
                 // Get Post object and use the values to update the UI
                 val post = dataSnapshot.getValue(UserProfile::class.java)
                 var p:UserProfile=UserProfile()
-                p.address=post!!.address
+                p.address= post?.address ?:""
 
 
-                view!!.setUserInfo(post)
+                view!!.setUserInfo(post )
                 // [START_EXCLUDE]
              //   mAuthorView.setText(post.author)
               //  mTitleView.setText(post.title)

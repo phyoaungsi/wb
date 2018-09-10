@@ -48,6 +48,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -77,16 +79,33 @@ public class ItemGridView extends AppCompatActivity implements ImageGridFragment
         setSupportActionBar(toolbar);
 
         FontUtil.setText(this.getBaseContext(),toolbar,false);
-      Log.i("ItemGridVIEW","oNCREATE----");
+/*
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
 
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
 
+                        // Log and toast
+                       // String msg = getString(R.string.save, token);
+                        Log.i("ItemGridVIEW","onToken----"+ token);
+                        Toast.makeText(ItemGridView.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+*/
       mImageView=this.findViewById(R.id.profile_image);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
      //  initRemoteConfig();
         Picasso.with(this)
                 .load(user.getPhotoUrl())
                 //  .networkPolicy(NetworkPolicy.)
-                .placeholder(R.drawable.back_48)
+                .placeholder(R.drawable.teenage_boy)
                 .into(mImageView, new Callback() {
                     @Override
                     public void onSuccess() {

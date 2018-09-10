@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingTop="20dp"
@@ -43,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:focusable="false"
             android:hint="@string/phone_number"
             android:inputType="phone" />
     </android.support.design.widget.TextInputLayout>

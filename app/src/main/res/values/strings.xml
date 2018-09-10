@@ -108,4 +108,5 @@ Yangon, Myanmar</string>
     <string name="phone_number">Phone Number</string>
     <string name="gender">Gender</string>
     <string name="delivery_address">Delivery Address</string>
+    <string name="my_account">My Account</string>
 </resources>

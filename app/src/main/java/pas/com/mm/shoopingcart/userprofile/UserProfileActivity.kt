@@ -36,7 +36,9 @@ class UserProfileActivity : AppCompatActivity(),UserProfileView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
+        toolbar.title=getString(R.string.my_account)
         setSupportActionBar(toolbar)
+
         presenter=UserProfilePresenter()
         presenter!!.view=this
 
