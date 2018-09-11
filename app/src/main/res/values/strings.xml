@@ -110,4 +110,8 @@ Yangon, Myanmar</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="my_account">My Account</string>
     <string name="bank_receipt">Upload Bank Transfer</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="device_has_no_camera">This device has no camera.</string>
+    <string name="choose_from_libary">Choose from photos</string>
+    <string name="allow_camera_access_settings">Camera is allowed to access</string>
 </resources>
