@@ -40,6 +40,7 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import pas.com.mm.shoopingcart.util.FontUtil.setText
 import android.widget.TextView
+import pas.com.mm.shoopingcart.util.CloudStorageUtil
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -63,6 +64,7 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
     var mPaymentTypeAdapter:ArrayAdapter<String>?=null
 
     var confirmBtn: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
@@ -99,6 +101,10 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
         db.callback=this
         comfirm_order.setOnClickListener( { view-> db.checkout()})
 
+        payment_upload.setOnClickListener({view-> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            showImageChooserDialog()
+        }
+        })
         db.loadBasket(this, user?.uid);
         db.retrieveUserProfile(this)
 
@@ -294,9 +300,9 @@ class BasketActivity() : AppCompatActivity(), BasketDataCallBack {
                     val picturePath = c.getString(columnIndex)
                     c.close()
 
-                  //  val photoUrl = mPhotoGridAdapter.getPhotoUrls()
-                  //  photoUrl.add(picturePath)
-                   // mPhotoGridAdapter.updateData(photoUrl)
+                   var util: CloudStorageUtil=CloudStorageUtil()
+                   util.uploadFile(picturePath)
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
